@@ -4,6 +4,11 @@ Created on Wed Oct 26 09:36:30 2016
 
 @author: moleary
 """
+def search(fname, directory):
+    import os
+    for dirpath, dirnames, filenames in os.walk(directory):
+        if fname in filenames:
+            return os.path.join(dirpath,fname)
 
 def currTime():
     """generates Current Date/time in clean format"""
