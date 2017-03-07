@@ -4,21 +4,26 @@ Created on Wed Oct 26 09:36:30 2016
 
 @author: moleary
 """
+import os
+import time
+import urllib
+import sqlalchemy as sql
+import pandas as pd
+from datetime import date,timedelta
+from calendar import monthrange
+from pandas.tseries.holiday import USFederalHolidayCalendar as fedHoliCal
+
 def search(fname, directory):
-    import os
     for dirpath, dirnames, filenames in os.walk(directory):
         if fname in filenames:
             return os.path.join(dirpath,fname)
 
 def currTime():
     """generates Current Date/time in clean format"""
-    import time
     return str(time.strftime("%a %d-%b-%Y, %I:%M:%S%p"))
 
 
 def sqlConn(serverName,dbName,userName,password):
-    import urllib
-    import sqlalchemy as sql
     params = urllib.parse.quote_plus('''DRIVER={SQL Server};SERVER='''+serverName+''';PORT=1433;
                                         DATABASE='''+dbName+''';UID='''+userName+''';PWD='''+password)
     engine = sql.create_engine("mssql+pyodbc:///?odbc_connect=%s" % params)
@@ -30,10 +35,6 @@ def sqlConn(serverName,dbName,userName,password):
 
 
 def businessDay(month='', day=1):
-    import pandas as pd
-    from datetime import date,timedelta
-    from calendar import monthrange
-    from pandas.tseries.holiday import USFederalHolidayCalendar as fedHoliCal
     if month not in list(range(1,13)):
         return "ERROR: Month value outside of range"
     if month == '':
