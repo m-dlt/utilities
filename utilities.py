@@ -13,6 +13,11 @@ from datetime import date,timedelta
 from calendar import monthrange
 from pandas.tseries.holiday import USFederalHolidayCalendar as fedHoliCal
 
+def __getstate__(self):
+    """Anywhere logger is defined in __init__ this function overwriting __getstate__ is needed.
+        Try/Excepts will be needed around all logging stuff for debug to work properly. Can't pickle logging."""
+    return dict((k, v) for (k, v) in self.__dict__.iteritems() if k != 'logger')
+
 def search(fname, directory):
     for dirpath, dirnames, filenames in os.walk(directory):
         if fname in filenames:
